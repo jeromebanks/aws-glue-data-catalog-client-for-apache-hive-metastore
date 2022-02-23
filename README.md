@@ -1,3 +1,11 @@
+# Attention
+
+This code is copied from the github repo [here](https://github.com/jeromebanks/aws-glue-data-catalog-client-for-apache-hive-metastore)
+and builds on changes done on this fork [here](https://github.com/viaduct-ai/aws-glue-data-catalog-client-for-apache-hive-metastore)
+
+The original Amazon repo is [here](https://github.com/awslabs/aws-glue-data-catalog-client-for-apache-hive-metastore)
+
+
 ## AWS Glue Data Catalog Client for Apache Hive Metastore
 The AWS Glue Data Catalog is a fully managed, Apache Hive Metastore compatible, metadata repository. Customers can use the Data Catalog as a central repository to store structural and operational metadata for their data.
 
