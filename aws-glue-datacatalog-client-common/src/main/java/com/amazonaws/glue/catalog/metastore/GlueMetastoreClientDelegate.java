@@ -4,6 +4,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.glue.catalog.converters.CatalogToHiveConverter;
 import com.amazonaws.glue.catalog.converters.GlueInputConverter;
 import com.amazonaws.glue.catalog.converters.HiveToCatalogConverter;
+import com.amazonaws.glue.catalog.converters.S3ToS3a;
 import com.amazonaws.glue.catalog.util.BatchCreatePartitionsHelper;
 import com.amazonaws.glue.catalog.util.ExpressionHelper;
 import com.amazonaws.glue.catalog.util.MetastoreClientUtils;
@@ -87,6 +88,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.regex.Pattern;
 
+import static com.amazonaws.glue.catalog.converters.S3ToS3a.S3LocationToS3a;
 import static com.amazonaws.glue.catalog.converters.ConverterUtils.stringToCatalogTable;
 import static com.amazonaws.glue.catalog.util.MetastoreClientUtils.deepCopyMap;
 import static com.amazonaws.glue.catalog.util.MetastoreClientUtils.isExternalTable;
@@ -164,9 +166,9 @@ public class GlueMetastoreClientDelegate {
     if (StringUtils.isEmpty(database.getLocationUri())) {
       database.setLocationUri(wh.getDefaultDatabasePath(database.getName()).toString());
     } else {
-      database.setLocationUri(wh.getDnsPath(new Path(database.getLocationUri())).toString());
+      database.setLocationUri(wh.getDnsPath(new Path(S3LocationToS3a(database.getLocationUri()))).toString());
     }
-    Path dbPath = new Path(database.getLocationUri());
+    Path dbPath = new Path(S3LocationToS3a(database.getLocationUri()));
     boolean madeDir = makeDirs(wh, dbPath);
 
     try {

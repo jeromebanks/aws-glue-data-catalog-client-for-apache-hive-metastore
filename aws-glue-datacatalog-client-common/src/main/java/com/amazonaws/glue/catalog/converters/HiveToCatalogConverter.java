@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.amazonaws.glue.catalog.converters.S3ToS3a.S3aLocationToS3;
 import static com.amazonaws.glue.catalog.converters.ConverterUtils.INDEX_DB_NAME;
 import static com.amazonaws.glue.catalog.converters.ConverterUtils.INDEX_DEFERRED_REBUILD;
 import static com.amazonaws.glue.catalog.converters.ConverterUtils.INDEX_HANDLER_CLASS;
@@ -30,7 +31,7 @@ public class HiveToCatalogConverter {
     com.amazonaws.services.glue.model.Database catalogDatabase = new com.amazonaws.services.glue.model.Database();
     catalogDatabase.setName(hiveDatabase.getName());
     catalogDatabase.setDescription(hiveDatabase.getDescription());
-    catalogDatabase.setLocationUri(hiveDatabase.getLocationUri());
+    catalogDatabase.setLocationUri(S3aLocationToS3(hiveDatabase.getLocationUri()));
     catalogDatabase.setParameters(hiveDatabase.getParameters());
     return catalogDatabase;
   }
@@ -63,7 +64,7 @@ public class HiveToCatalogConverter {
     catalogSd.setBucketColumns(hiveSd.getBucketCols());
     catalogSd.setColumns(convertFieldSchemaList(hiveSd.getCols()));
     catalogSd.setInputFormat(hiveSd.getInputFormat());
-    catalogSd.setLocation(hiveSd.getLocation());
+    catalogSd.setLocation(S3aLocationToS3(hiveSd.getLocation()));
     catalogSd.setOutputFormat(hiveSd.getOutputFormat());
     catalogSd.setSerdeInfo(convertSerDeInfo(hiveSd.getSerdeInfo()));
     catalogSd.setSkewedInfo(convertSkewedInfo(hiveSd.getSkewedInfo()));

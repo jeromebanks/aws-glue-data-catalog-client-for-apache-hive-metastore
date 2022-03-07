@@ -1,6 +1,7 @@
 package com.amazonaws.glue.catalog.converters;
 
 import com.amazonaws.services.glue.model.ErrorDetail;
+import static com.amazonaws.glue.catalog.converters.S3ToS3a.S3LocationToS3a;
 
 import org.apache.hadoop.hive.metastore.api.AlreadyExistsException;
 import org.apache.hadoop.hive.metastore.api.Database;
@@ -105,7 +106,7 @@ public class CatalogToHiveConverter {
     Database hiveDatabase = new Database();
     hiveDatabase.setName(catalogDatabase.getName());
     hiveDatabase.setDescription(catalogDatabase.getDescription());
-    String location = catalogDatabase.getLocationUri();
+    String location = S3LocationToS3a(catalogDatabase.getLocationUri());
     hiveDatabase.setLocationUri(location == null ? "" : location);
     hiveDatabase.setParameters(firstNonNull(catalogDatabase.getParameters(), Maps.<String, String>newHashMap()));
     return hiveDatabase;
@@ -171,7 +172,7 @@ public class CatalogToHiveConverter {
   public static StorageDescriptor convertStorageDescriptor(com.amazonaws.services.glue.model.StorageDescriptor catalogSd) {
     StorageDescriptor hiveSd = new StorageDescriptor();
     hiveSd.setCols(convertFieldSchemaList(catalogSd.getColumns()));
-    hiveSd.setLocation(catalogSd.getLocation());
+    hiveSd.setLocation(S3LocationToS3a(catalogSd.getLocation()));
     hiveSd.setInputFormat(catalogSd.getInputFormat());
     hiveSd.setOutputFormat(catalogSd.getOutputFormat());
     hiveSd.setCompressed(catalogSd.getCompressed());
